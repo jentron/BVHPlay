@@ -10,6 +10,7 @@ from geo import worldvert, screenvert, worldedge, screenedge, grid_setup
 from skeleton import skeleton, process_bvhfile
 import profile
 import sys
+from os.path import basename, dirname
 
 CANVAS_MINSIZE = 500
 
@@ -368,21 +369,17 @@ def open_file():      # read_file file_read load_file
                filetypes =[ ('BVH files', '*.bvh'), ('All files', '*')]     )
 
   if DEBUG:
-    print("filename = ",filename ) # Remove this line later
-  index = filename.rfind('/')  # Unix
-  index2 = filename.rfind('\\') # Windows
-  if index != -1:
-    file_prefix = filename[0:index+1]
-    if DEBUG:
-        print("File prefix is ", file_prefix )
-  elif index2 != -1:      
-    file_prefix = filename[0:index2+1]
-    if DEBUG:
-        print("File prefix is ", file_prefix )    
+    print("filename = ",filename, flush=True ) # Remove this line later
 
   # askopenfilename also allows: initialdir = ''
   # "filename" will have length 0 if user cancels the open.
   if len(filename) > 0:
+      file_prefix = dirname(filename)
+      file_base   = basename(filename)
+      if DEBUG:
+         print("File prefix is ", file_prefix )
+         print("File name is ", file_base, flush=True )
+
       try:
         myskeleton2 = process_bvhfile(filename,DEBUG=0)
      ## myskeleton2 = profile.run('process_bvhfile(FILE,DEBUG=0)')
@@ -447,6 +444,7 @@ def open_file():      # read_file file_read load_file
                    myskeleton.maxx, myskeleton.maxz, DEBUG=0)
       redraw_grid = 1
       redraw_axes = 1
+      root.title('BVHPlay: {}'.format(file_base))
       redraw()
 
 ################################################
