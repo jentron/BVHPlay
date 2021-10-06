@@ -22,7 +22,7 @@
 
 
 from math import radians, cos, sin
-from cgkit.bvh import BVHReader
+from cgkit_bvh import BVHReader
 from geo import worldvert, screenvert, worldedge, screenedge
 from numpy import array, dot
 from copy import deepcopy
