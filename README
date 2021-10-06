@@ -1,13 +1,13 @@
-                  (README v1.01, September 17, 2008)
+                  (README v2.00, October 6, 2021)
 
 This is the readme file for BVHplay, a free BVH player.
 
-You can get BVHplay at www.cgspeed.com or bvhplay.sourceforge.net
+You can get BVHplay at www.cgspeed.com, github.com/jentron/BVHPlay,
+ or bvhplay.sourceforge.net
 
-BVHplay uses portions of CGkit, the Python Computer Graphics kit,
-available at cgkit.sourceforge.net.  A copy of the license from
-Appendix A of the cgkit documentation is supplied with the BVHplay
-release in the file "cgkit-license"
+BVHplay uses a modified version of the BVH Reader code from CGkit, 
+the Python Computer Graphics kit, available at cgkit.sourceforge.net.
+The GPL 3.0 license for this file is contained in the file cgkit_bvh.py.
 
 BVHplay also uses portion of Numpy, a math library for Python.  A copy
 of the license for Numpy is supplied with the BVHplay release in the
@@ -27,7 +27,8 @@ CONTENTS
 
 1. INSTALLATION
 
-1.1 Windows: installing from the packaged release
+1.1 Windows: installing from the packaged release 
+** OBSOLETE! No packaged release, see 1.4 **
 
 As this is the first time I've publicly released any software that
 I've written, I decided to avoid creating an installer and instead
@@ -53,6 +54,7 @@ because it looks within its own directory for the other files.
 
 
 1.2 Linux: installing the binary from the packaged release
+** OBSOLETE! No packaged release, see 1.4 **
 
 The binary-release .tar.gz file should contain a standalone executable
 called "bvhplay".  Simply run BVHplay from your shell command line to
@@ -70,41 +72,39 @@ you'll need to install from the source code, which isn't very difficult.
 1.4 Installing from the playbvh source code
 
 Working with the Python source code of playbvh is easy, however you do
-need to have Python, and you need to install the two Python packages
+need to have Python, and you need to install the Python packages
 on which playbvh depends.  Here are the steps:
 
 Step 0: Install Python.  Any modern distribution of Linux should ship
 with Python preinstalled these days, or should make it easy for you to
 semi-automatically install Python.  PlayBVH was developed under Python
-2.5.1, though it should generally work with recent older versions of
+3.7.3, though it should generally work with recent older versions of
 Python.  If you'd like to install Python directly from the official
 Python release site, you can get that at www.python.org/download/
 
-Step 1: Download and install cgkit from one of these URLs:
- http://sourceforge.net/project/showfiles.php?group_id=50475&package_id=44077
- http://cgkit.sourceforge.net/download.html
-The build process is fairly simple.
+Step 1: Install TKinter:
+ pip install tk
 
-Step 2: Download and install Numpy from one of these URLs:
- http://sourceforge.net/project/showfiles.php?group_id=1369&package_id=175103
- http://numpy.scipy.org/
-The build process is fairly simple, but does involve quite a bit of C
-compilation via gcc.
+Step 2: Install Numpy see numpy.org/install/:
+ pip install numpy
 
 Step 3: Create a directory and put all of the following BVHplay files into it:
      - BVHplay.py
+     - camera.py
+	 - cgkit_bvh.py
      - geo.py
+     - menu.py
      - skeleton.py
      - transport.py
-     - menu.py
-     - camera.py
 
-Step 4: Make all the python files executable and readable.  From your
-Linux prompt:
-     unix% chmod a+rx *.py
+Step 4: Make all the python files readable and the BVHplay.py file executable.
+From your Linux prompt:
+     unix% chmod 0644 *.py
+     unix% chmod 0755 BVHplay.py
 
 Step 5: Run BVHplay.  From your Linux prompt:
      unix% ./BVHplay.py
+	 
 The first time you run it will take a few seconds because Python has
 to create the .pyc "compiled" versions of the .py files.
 
@@ -197,7 +197,7 @@ Morgan Kaufmann, 2008
 
 BVHplay is copyright (c) 2008 Bruce Hahne.  I didn't write the CGkit
 or Numpy Python library modules and don't maintain copyright over them
--- please see the separate "cgkit-license" and "numpy-license" files
+-- please see the separate "cgkit_bvh.py" and "numpy-license" files
 for copyright and licensing information about those modules.
 
 BVHplay is usable as open source software under the terms of version
