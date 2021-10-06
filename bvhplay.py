@@ -193,8 +193,11 @@ def canvas_frame_change(event):
 # And since the class constructor doesn't set up the callbacks, we have to
 # do so ourselves after creating the Transport -- see the main code where
 # we call Transport()
+#
+# Button callbacks don't send positional arguments, but keyboard callbacks
+# do, so we need a optional event variable for dual use
 
-def onBegin():
+def onBegin(event=None):
     global slidert
     global myskeleton
     global skelscreenedges
@@ -206,7 +209,7 @@ def onBegin():
     redraw()
 
 
-def onEnd():
+def onEnd(event=None):
 #    print "end button clicked"
     global slidert
     global myskeleton
@@ -223,10 +226,10 @@ def onEnd():
 # When the user clicks play, we don't immediately step forward
 # a frame.  Instead we just set mytransport.playing and set up
 # PlayScheduler for a callback.
-def onPlay():
+def onPlay(event=None):
     global mytransport
     global myskeleton
-#    print "play button clicked"
+    # print("play button clicked: playing={}".format(mytransport.playing), flush=True)
     if not myskeleton: return  # Get out if myskeleton doesn't yet exist
     # if mytransport.playing is already 1, no need to do anything
     if not mytransport.playing:
@@ -285,12 +288,20 @@ def PlayScheduler():
         mytransport.after(msec, PlayScheduler)  
 
 
-def onStop():
+def onStop(event=None):
     global mytransport
 #    print "stop button clicked"
     mytransport.playing = 0
 
-def onStepback():
+def onPlaytoggle(event=None):
+    global mytransport
+    # print("Toggle button clicked: {}".format(event), flush=True)
+    if mytransport.playing:
+        onStop()
+    else:
+        onPlay()
+    
+def onStepback(event=None):
     global slidert
     global myskeleton
     global skelscreenedges
@@ -303,7 +314,7 @@ def onStepback():
                                         DEBUG=0)
     redraw()
 
-def onStepfd():
+def onStepfd(event=None):
     global slidert
     global myskeleton
     global skelscreenedges
@@ -626,6 +637,12 @@ root.bind('<KeyPress-w>', MoveFd)
 root.bind('<KeyPress-s>', MoveBack)
 root.bind('<KeyPress-q>', RotL)
 root.bind('<KeyPress-e>', RotR)
+
+root.bind('<Up>', onBegin)
+root.bind('<Down>', onEnd )
+root.bind('<Left>', onStepback)
+root.bind('<Right>', onStepfd)
+root.bind('<KeyPress-space>', onPlaytoggle )
 
 
 # Call Config() when CANVAS FRAME is resized.  We don't want to

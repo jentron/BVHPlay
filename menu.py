@@ -55,12 +55,12 @@ class Menubar:
 
         t13 = " Transport buttons:"
         t14 = " From left to right, the meanings of the buttons are as follows: "
-        t15 = " -- Go to first frame of BVH sequence"
-        t16 = " -- Step back 1 frame"
-        t17 = " -- Stop"
-        t18 = " -- Play"
-        t19 = " -- Step forward 1 frame"
-        t20 = " -- Go to last frame"
+        t15 = " -- Go to first frame of BVH sequence (up arrow)"
+        t16 = " -- Step back 1 frame (left arrow)"
+        t17 = " -- Stop (space bar)"
+        t18 = " -- Play (space bar)"
+        t19 = " -- Step forward 1 frame (right arrow)"
+        t20 = " -- Go to last frame  (down arrow)"
 
         t21 = " Window resize:"
         t22 = " Yes!  You can resize the application window and the animation"
@@ -87,7 +87,7 @@ class Menubar:
 
     def about(self):
       win = Toplevel()
-      t1 = " Welcome to BVHplay, a free BVH player.  v1.00"
+      t1 = " Welcome to BVHplay, a free BVH player.  v2.00"
 
       t2 = " Home site for this program: www.cgspeed.com"
       t3 = " The source code is also available."
