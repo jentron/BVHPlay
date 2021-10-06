@@ -67,14 +67,14 @@ class joint:
                         # joint's endpoint.  A list of vec4's
 
   def info(self):
-    print "Joint name:", self.name
-    print " %s is connected to " % self.name,
+    print("Joint name:", self.name)
+    print(" %s is connected to " % self.name, end=" ")
     if(len(self.children) == 0):
-        print "nothing"
+        print("nothing")
     else:
       for child in self.children:
-        print "%s " % child.name,
-      print
+        print("%s " % child.name, end=" ")
+      print('')
     for child in self.children:
       child.info()
 
@@ -103,7 +103,7 @@ class joint:
   # Called by skeleton.create_edges()
   def create_edges_recurse(self, edgelist, t, DEBUG=0):
     if DEBUG:
-      print "create_edge_recurse starting for joint ", self.name
+      print("create_edge_recurse starting for joint ", self.name)
     if self.hasparent:
       temp1 = self.parent.worldpos[t]  # Faster than triple lookup below?
       temp2 = self.worldpos[t]
@@ -118,7 +118,7 @@ class joint:
 
     for child in self.children:
       if DEBUG:
-        print " Recursing for child ", child.name
+        print(" Recursing for child ", child.name)
       child.create_edges_recurse(edgelist,t, DEBUG)
 
 # End class joint
@@ -190,18 +190,18 @@ class skeleton:
 #
   def make_skelscreenedges(self, arrow='none', circle=0, DEBUG=0):
     if DEBUG:
-      print "make_sse starting"
+      print("make_sse starting")
 
 # I need the number of joints in self.  We don't store this value
 # in the class, but we can get it by looking at the length of any
 # edge array self.edges[t] for any t.  So we make sure that self.edges[1]
 # is set up, then we take its length.
-    if not (self.edges.has_key(1)):
+    if not 1 in self.edges:
       self.create_edges_onet(1)
 
     jointcount = len(self.edges[1])
     if DEBUG:
-      print "make_skelscreenedges: jointcount=",jointcount
+      print("make_skelscreenedges: jointcount=",jointcount)
     skelscreenedges = []
 
     for x in range(jointcount):
@@ -220,30 +220,29 @@ class skeleton:
 # CREATE_EDGES_ONET class function
 
   def create_edges_onet(self,t,DEBUG=0):
-#    print "create_edges_onet starting for t=",t
     if DEBUG:
-      print "create_edges_onet starting for t=",t
+      print("create_edges_onet starting for t=",t)
 
 # Before we can compute edge positions, we need to have called
 # process_bvhkeyframe for time t, which computes trtr and worldpos
 # for the joint hierarchy at time t.  Since we no longer precompute
 # this information when we read the BVH file, here's where we do it.
 # This is on-demand computation of trtr and worldpos.
-    if not (self.hips.worldpos.has_key(t)):
+    if not t in self.hips.worldpos:
       if DEBUG:
-        print "create_edges_onet: about to call process_bvhkeyframe for t=",t
+        print("create_edges_onet: about to call process_bvhkeyframe for t=",t)
       process_bvhkeyframe(self.keyframes[t-1], self.hips, t, DEBUG=DEBUG)
 
-    if not (self.edges.has_key(t)):
+    if not t in self.edges:
       if DEBUG:
-        print "create_edges_onet: creating edges for t=",t
+        print("create_edges_onet: creating edges for t=",t)
       edgelist = []
       self.hips.create_edges_recurse(edgelist, t, DEBUG=DEBUG)
       self.edges[t] = edgelist  # dictionary entry      
 
     if DEBUG:
-      print "create_edges edge list at timestep %d:" %(t)
-      print edgelist
+      print("create_edges edge list at timestep %d:" %(t))
+      print(edgelist)
 
 
 #################################
@@ -257,12 +256,12 @@ class skeleton:
 
   def populate_skelscreenedges(self, sse, t, DEBUG=0):
     if DEBUG:
-      print "populate_sse starting for t=",t
+      print("populate_sse starting for t=",t)
 # First we have to make sure that self.edges exists for slidert=t
-    if not (self.edges.has_key(t)):
+    if not t in self.edges:
       if DEBUG:
-        print "populate_skelscreenedges: about to call create_edges_onet(%d)" \
-                             % (t)
+        print("populate_skelscreenedges: about to call create_edges_onet(%d)" \
+                             % (t))
       self.create_edges_onet(t, DEBUG=DEBUG)
     counter = 0
     for wldedge in self.edges[t]:
@@ -277,8 +276,8 @@ class skeleton:
       sse[counter].descr = wldedge.descr
       counter +=1
     if DEBUG:
-      print "populate_skelscreenedges: copied %d edges from skeleton to sse" \
-          % (counter)
+      print("populate_skelscreenedges: copied %d edges from skeleton to sse" \
+          % (counter))
 
 
 
@@ -382,8 +381,8 @@ def process_bvhkeyframe(keyframe, joint, t, DEBUG=0):
   drotmat = array([ [1.,0.,0.,0.],[0.,1.,0.,0.],[0.,0.,1.,0.],[0.,0.,0.,1.] ])
 
   if DEBUG:
-    print " process_bvhkeyframe: doing joint %s, t=%d" %  (joint.name, t)
-    print " keyframe has %d elements in it." % (len(keyframe))
+    print(" process_bvhkeyframe: doing joint %s, t=%d" %  (joint.name, t))
+    print(" keyframe has %d elements in it." % (len(keyframe)))
 
   # Suck in as many values off the front of "keyframe" as we need
   # to populate this joint's channels.  The meanings of the keyvals
@@ -449,8 +448,8 @@ def process_bvhkeyframe(keyframe, joint, t, DEBUG=0):
       drotmat2[1,1] = mycos
       drotmat = dot(drotmat, drotmat2)
     else:
-      print "Fatal error in process_bvhkeyframe: illegal channel name ", \
-                                                               channel
+      print("Fatal error in process_bvhkeyframe: illegal channel name ", \
+                                                               channel )
       return(0)
 ##      sys.exit()
     counter += 1
@@ -465,13 +464,13 @@ def process_bvhkeyframe(keyframe, joint, t, DEBUG=0):
     dtransmat[2,3] = zpos
 
     if DEBUG:
-      print "  Joint %s: xpos ypos zpos is %s %s %s" % (joint.name, \
-                                                   xpos, ypos, zpos)
+      print("  Joint %s: xpos ypos zpos is %s %s %s" % (joint.name, \
+                                                   xpos, ypos, zpos))
     # End of IF dotrans
 
     if DEBUG:
-      print "  Joint %s: xrot yrot zrot is %s %s %s" %     \
-               (joint.name, xrot, yrot, zrot)
+      print("  Joint %s: xrot yrot zrot is %s %s %s" %     \
+               (joint.name, xrot, yrot, zrot))
 
   # At this point we should have computed:
   #  stransmat  (computed previously in process_bvhnode subroutine)
@@ -527,20 +526,20 @@ def process_bvhkeyframe(keyframe, joint, t, DEBUG=0):
   joint.worldpos[t] = worldpos  # Dictionary-based approach
 
   if DEBUG:
-    print "  Joint %s: here are some matrices" % (joint.name)
-    print "   stransmat:"
-    print joint.stransmat
+    print("  Joint %s: here are some matrices" % (joint.name) )
+    print("   stransmat:" )
+    print(joint.stransmat )
     if not (joint.hasparent):  # if hips
-      print "   dtransmat:"
-      print dtransmat
-    print "   drotmat:"
-    print drotmat
-    print "   localtoworld:"
-    print localtoworld
-    print "   trtr:"
-    print trtr
-    print "  worldpos:", worldpos
-    print
+      print("   dtransmat:" )
+      print(dtransmat )
+    print("   drotmat:" )
+    print(drotmat )
+    print("   localtoworld:" )
+    print(localtoworld )
+    print("   trtr:" )
+    print(trtr )
+    print("  worldpos:", worldpos )
+    print('')
 
   newkeyframe = keyframe[counter:]  # Slices from counter+1 to end
   for child in joint.children:
@@ -549,7 +548,7 @@ def process_bvhkeyframe(keyframe, joint, t, DEBUG=0):
     # process
     newkeyframe = process_bvhkeyframe(newkeyframe, child, t, DEBUG=DEBUG)
     if(newkeyframe == 0):  # If retval = 0
-      print "Passing up fatal error in process_bvhkeyframe"
+      print("Passing up fatal error in process_bvhkeyframe" )
       return(0)
   return newkeyframe
 
@@ -574,19 +573,19 @@ def process_bvhfile(filename, DEBUG=0):
 #
 # mybvh.read() returns None on success and throws an exception on failure.
 
-  print "Reading BVH file...",
+  print("Reading BVH file {}...".format(filename), end=" ", flush=True )
   mybvh = readbvh(filename)  # Doesn't actually read the file, just creates
                          # a readbvh object and sets up the file for
                          # reading in the next line.
   retval = mybvh.read()  # Reads and parses the file.
 
   hips = process_bvhnode(mybvh.root)  # Create joint hierarchy
-  print "done"
+  print("done" , flush=True )
 
-  print "Building skeleton...",
+  print("Building skeleton...", end=" " )
   myskeleton = skeleton(hips, keyframes = mybvh.keyframes,    \
                           frames=mybvh.frames, dt=mybvh.dt)
-  print "done"
+  print("done" )
   if DEBUG:
-    print "skeleton is: ", myskeleton
+    print("skeleton is: ", myskeleton )
   return(myskeleton)

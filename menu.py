@@ -1,7 +1,7 @@
 #
 # from Tkinter import *
 
-from Tkinter import Menu, Toplevel, Button, Label, BOTTOM, LEFT, W
+from tkinter import Menu, Toplevel, Button, Label, BOTTOM, LEFT, W
 
 ########################################
 

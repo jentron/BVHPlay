@@ -152,8 +152,8 @@ class Camera:  # Defaults based pretty much on trial and error
         self.t[2] -= (self.trans_inc * sin(self.yrot))
         self.RecomputeTrans()
         if self.debug: 
-            print "Camera move right"
-            print self
+            print("Camera move right")
+            print(self)
 
     def MoveL(self, event=None):
 #cgkit#        self.t.x -= (self.trans_inc * cos(self.yrot))
@@ -162,8 +162,8 @@ class Camera:  # Defaults based pretty much on trial and error
         self.t[2] += (self.trans_inc * sin(self.yrot))
         self.RecomputeTrans()
         if self.debug: 
-            print "Camera move left"
-            print self
+            print("Camera move left")
+            print(self)
 
     def MoveUp(self, event=None):
         # This camera isn't allowed to tilt up/down or L/R, so "move up"
@@ -172,16 +172,16 @@ class Camera:  # Defaults based pretty much on trial and error
         self.t[1] += self.trans_inc
         self.RecomputeTrans()
         if self.debug: 
-            print "Camera move up"
-            print self
+            print("Camera move up")
+            print(self)
 
     def MoveDown(self, event=None):
 #cgkit#        self.t.y -= self.trans_inc
         self.t[1] -= self.trans_inc
         self.RecomputeTrans()
         if self.debug: 
-            print "Camera move down"
-            print self
+            print("Camera move down")
+            print(self)
 
     def MoveFd(self, event=None):
         if self.parallel:
@@ -199,8 +199,8 @@ class Camera:  # Defaults based pretty much on trial and error
           self.t[2] -= (self.trans_inc * cos(self.yrot))
           self.RecomputeTrans()
         if self.debug:
-            print "Camera move forward"
-            print self
+            print("Camera move forward")
+            print(self)
 
     def MoveBack(self, event=None):
         if self.parallel:
@@ -214,8 +214,8 @@ class Camera:  # Defaults based pretty much on trial and error
           self.t[2] += (self.trans_inc * cos(self.yrot))
           self.RecomputeTrans()
         if self.debug:
-            print "Camera move back"
-            print self
+            print("Camera move back")
+            print(self)
 
     def RotR(self, event=None):
         self.yrot -= self.rot_inc
@@ -223,8 +223,8 @@ class Camera:  # Defaults based pretty much on trial and error
             self.yrot += 2*pi
         self.RecomputeRot()
         if self.debug:
-            print "Camera rotate right"
-            print self
+            print("Camera rotate right")
+            print(self)
 
     def RotL(self, event=None):
         self.yrot += self.rot_inc
@@ -232,6 +232,6 @@ class Camera:  # Defaults based pretty much on trial and error
             self.yrot -= 2*pi
         self.RecomputeRot()
         if self.debug:
-            print "Camera rotate left"
-            print self
+            print("Camera rotate left")
+            print(self)
 

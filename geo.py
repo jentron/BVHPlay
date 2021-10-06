@@ -66,8 +66,8 @@ class screenvert:
         # (trans then rot then invertz) maintained by the Camera object
         self.camtr = dot(camera.worldtocam, self.tr)
         if self.DEBUG:
-            print "Converted vertex %s to camspace:" % (self.descr)
-            print self
+            print("Converted vertex %s to camspace:" % (self.descr) )
+            print(self)
 
 
 
@@ -236,8 +236,8 @@ class screenedge:
           x2 = self.sv2.screenx
           y2 = self.sv2.screeny
           if self.DEBUG:
-            print "About to call create_line with (%d, %d, %d, %d)"    \
-                        % (x1,y1,x2,y2)
+            print("About to call create_line with (%d, %d, %d, %d)"    \
+                        % (x1,y1,x2,y2) )
           self.id = canvas.create_line(x1,y1,x2,y2, fill=self.color, \
                                        width=self.width, arrow=self.arrow)
           if self.circle:
@@ -279,8 +279,8 @@ def undraw_screen_lines(screenedgelist, canvas):
 def grid_setup(minx, minz, maxx, maxz, DEBUG=0):
 
     if DEBUG:
-        print "grid_setup: minx=%s, minz=%s, maxx=%s, maxz=%s" % \
-            (minx, minz, maxx, maxz)
+        print("grid_setup: minx=%s, minz=%s, maxx=%s, maxz=%s" % \
+            (minx, minz, maxx, maxz) )
 
     # The input values define a rectangle.  Round them to nearest 10.
     minx2 = 10*int(minx/10) - 10
@@ -296,8 +296,8 @@ def grid_setup(minx, minz, maxx, maxz, DEBUG=0):
       sv2 = screenvert(maxx2, 0., z)
       se = screenedge(sv1, sv2, width=1, color='grey', DEBUG=0)
       if DEBUG:
-          print "grid_setup: adding screenedge from (%d,%d) to (%d,%d)" \
-              % (minx2, z, maxx2, z)
+          print("grid_setup: adding screenedge from (%d,%d) to (%d,%d)" \
+              % (minx2, z, maxx2, z) )
       gridedges.append(se)
 
     for x in range(minx2, maxx2+1, 10):
@@ -305,8 +305,8 @@ def grid_setup(minx, minz, maxx, maxz, DEBUG=0):
       sv2 = screenvert(x, 0., maxz2)
       se = screenedge(sv1, sv2, width=1, color='grey', DEBUG=0)
       if DEBUG:
-          print "grid_setup: adding screenedge from (%d,%d) to (%d,%d)" \
-              % (x, minz2, x, maxz2)
+          print("grid_setup: adding screenedge from (%d,%d) to (%d,%d)" \
+              % (x, minz2, x, maxz2) )
       gridedges.append(se)
 
     return gridedges

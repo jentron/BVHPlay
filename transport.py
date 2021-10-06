@@ -1,5 +1,5 @@
 
-from Tkinter import Frame, BOTTOM, LEFT, S, NW, X, BitmapImage, Button, \
+from tkinter import Frame, BOTTOM, LEFT, S, NW, X, BitmapImage, Button, \
     Scale, YES, BOTH, Canvas
 from math import log10, pow, floor, degrees
 

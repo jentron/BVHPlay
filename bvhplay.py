@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
-from Tkinter import Tk, IntVar, mainloop, Toplevel, BOTTOM, LEFT, W, \
+from tkinter import Tk, IntVar, mainloop, Toplevel, BOTTOM, LEFT, W, \
     Button, Label
-from tkFileDialog import askopenfilename
+from tkinter.filedialog import askopenfilename
 from transport import Transport, Playbar, Viewport
 from camera import Camera
 from menu import Menubar
@@ -138,9 +138,9 @@ def canvas_frame_change(event):
   global redraw_axes
   DEBUG = 0
   if DEBUG:
-    print "Got configure for event ", event
-    print " widget = %s, width = %d, height = %d" % \
-            (event.widget, event.width, event.height)
+    print("Got configure for event ", event)
+    print(" widget = %s, width = %d, height = %d" % \
+            (event.widget, event.width, event.height) )
 
 # The first time Tk calls this callback will be during initial window
 # setup.  The Viewport() constructor initializes xframesize (and
@@ -153,7 +153,7 @@ def canvas_frame_change(event):
   elif ( (myviewport.framewidth != event.width) or \
                   (myviewport.frameheight != event.height)):
     if DEBUG:
-      print "canvas_frame_change: time to resize the canvas!"
+      print("canvas_frame_change: time to resize the canvas!" )
     myviewport.framewidth = event.width
     myviewport.frameheight = event.height
 
@@ -172,10 +172,10 @@ def canvas_frame_change(event):
                                  height=myviewport.canvasheight)
 
     if DEBUG:
-        print " Resized canvas and camera aspect ratio."
-        print " New canvas w,h: (%d, %d)" % (myviewport.canvaswidth,   \
-                                                myviewport.canvasheight)
-        print " New camera cfx,cfy: (%d, %d)" % (mycamera.cfx, mycamera.cfy)
+        print(" Resized canvas and camera aspect ratio.")
+        print(" New canvas w,h: (%d, %d)" % (myviewport.canvaswidth,   \
+                                                myviewport.canvasheight) )
+        print(" New camera cfx,cfy: (%d, %d)" % (mycamera.cfx, mycamera.cfy) )
     redraw_grid = 1
     redraw_axes = 1
     redraw()
@@ -352,6 +352,7 @@ def open_file():      # read_file file_read load_file
   global redraw_grid
   global redraw_axes
   global file_prefix
+  DEBUG=0
 
 # No, you aren't allowed to try to load a new BVH in the middle of playing
 # back the current BVH... nice try.
@@ -366,15 +367,18 @@ def open_file():      # read_file file_read load_file
                initialdir = file_prefix,                             \
                filetypes =[ ('BVH files', '*.bvh'), ('All files', '*')]     )
 
-  print "filename = ",filename  # Remove this line later
+  if DEBUG:
+    print("filename = ",filename ) # Remove this line later
   index = filename.rfind('/')  # Unix
   index2 = filename.rfind('\\') # Windows
   if index != -1:
     file_prefix = filename[0:index+1]
-    print "File prefix is ", file_prefix
+    if DEBUG:
+        print("File prefix is ", file_prefix )
   elif index2 != -1:      
     file_prefix = filename[0:index2+1]
-    print "File prefix is ", file_prefix      
+    if DEBUG:
+        print("File prefix is ", file_prefix )    
 
   # askopenfilename also allows: initialdir = ''
   # "filename" will have length 0 if user cancels the open.
@@ -384,18 +388,19 @@ def open_file():      # read_file file_read load_file
      ## myskeleton2 = profile.run('process_bvhfile(FILE,DEBUG=0)')
       except IOError:
         string = "IO Error while attempting to read file."
-        print string
+        print(string)
         error_popup(string)
         return
       except SyntaxError:
         string = "Parse error in BVH file."
-        print string
+        print(string)
         error_popup(string)
         return
-      except:
-        string = "Unknown error while attempting to read file."
-        print string
+      except Exception as e:
+        string = "Unknown error while attempting to read file. "
+        print(string, e, flush = True)
         error_popup(string)
+        raise e # this will crash BVHPlay on purpose
         return
 
   # If we make it here then we've successfully read and parsed the BVH file,
